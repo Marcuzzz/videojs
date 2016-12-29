@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>videojs-overlay Demo</title>
+  <link href="/node_modules/video.js/dist/video-js.css" rel="stylesheet">
+  <link href="/node_modules/videojs-overlay/dist/videojs-overlay.css" rel="stylesheet">
+  <link href="/node_modules/videojs-vjsdownload/dist/videojs-vjsdownload.css" rel="stylesheet">
+</head>
+<body>
+  <video id="videojs-overlay-player" class="video-js vjs-default-skin" controls>
+  </video>
+
+
+	  
+http://dfcb.github.io/BigVideo.js
+
+  
+  <button class="previous">Previous</button>
+  <button class="next">Next</button>
+  <div class="autoadvance-group">
+    <h4>Auto-advance (in seconds)</h4>
+    <label><input type="radio" name="autoadvance" value="null" checked> No auto-advance</label>
+    <label><input type="radio" name="autoadvance" value="0"> 0</label>
+    <label><input type="radio" name="autoadvance" value="5"> 5</label>
+    <label><input type="radio" name="autoadvance" value="10"> 10</label>
+    <label><input type="radio" name="autoadvance" value="30"> 30</label>
+  </div>
+  
+  <script>
+    var videoList = [{
+      sources: [{
+        src: 'trailer.mp4',
+        type: 'video/mp4'
+      }],
+      //poster: 'http://media.w3.org/2010/05/sintel/poster.png'
+       track: [{
+        src: 'trailer.srt',
+        srclang: 'en',
+        label: 'English'
+      }],
+    }, {
+      sources: [{
+        src: 'http://media.w3.org/2010/05/bunny/trailer.mp4',
+        type: 'video/mp4'
+      }],
+      //poster: 'http://media.w3.org/2010/05/bunny/poster.png'
+    }, {
+      sources: [{
+        src: 'http://vjs.zencdn.net/v/oceans.mp4',
+        type: 'video/mp4'
+      }],
+      //poster: 'http://www.videojs.com/img/poster.jpg'
+    }, {
+      sources: [{
+        src: 'http://media.w3.org/2010/05/bunny/movie.mp4',
+        type: 'video/mp4'
+      }],
+      //poster: 'http://media.w3.org/2010/05/bunny/poster.png'
+    }, {
+      sources: [{
+        src: 'http://media.w3.org/2010/05/video/movie_300.mp4',
+        type: 'video/mp4'
+      }],
+      //poster: 'http://media.w3.org/2010/05/video/poster.png'
+    }];
+  </script>  
+
+  <script src="/node_modules/video.js/dist/video.js"></script>
+  <script src="/node_modules/videojs-overlay/dist/videojs-overlay.js"></script>
+  <script src="/node_modules/videojs-playlist/dist/videojs-playlist.js"></script>
+  <script src="/node_modules/videojs-vjsdownload/dist/videojs-vjsdownload.js"></script>
+  <script src="/node_modules/videojs-select-subtitle/dist/videojs-select-subtitle.js"></script>
+  
+  <script>
+    (function(window, videojs) {
+      var player = window.player = videojs('videojs-overlay-player',{ 'playbackRates': [0.7, 1.0, 1.5, 2.0] });
+      
+      player.overlay({
+        debug: true,
+        overlays: [ 
+        {
+          content: 'Other content playing!',	
+          start: 1,
+          end: 15,
+          align: 'top'
+        }
+        ]
+      });
+    }(window, window.videojs));
+  
+  
+  /*
+  {
+          //content: 'The video is playing!',
+          //start: 'play',
+          //end: 'pause'
+        },
+ */
+ 
+  </script>
+  
+<script>
+
+player.selectSubtitle();
+
+player.vjsdownload({
+	  //beforeElement: 'playbackRateMenuButton',
+      textControl: 'Download video',
+      name: 'downloadButton'
+      },
+
+
+function() {
+  console.log('Callback video-js initiated');
+  this.on('downloadvideo', function(){
+    console.log('downloadvideo triggered');
+  });
+  
+});  
+ 
+</script>
+  
+  
+  
+  <script>
+
+   player.playlist(videoList);
+   
+   document.querySelector('.previous').addEventListener('click', function() {
+      player.playlist.previous();
+    });
+
+    document.querySelector('.next').addEventListener('click', function() {
+      player.playlist.next();
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll('[name=autoadvance]'), function(el) {
+      el.addEventListener('click', function() {
+        var value = document.querySelector('[name=autoadvance]:checked').value;
+        player.playlist.autoadvance(JSON.parse(value));
+      });
+    });
+
+ </script>
+ 
+ 
+</body>
+</html>

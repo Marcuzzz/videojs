@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>videojs-overlay Demo</title>
+  <script
+  src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+  integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc="
+  crossorigin="anonymous"></script>
+  <link href="/node_modules/video.js/dist/video-js.css" rel="stylesheet">
+  <link href="/node_modules/videojs-overlay/dist/videojs-overlay.css" rel="stylesheet">
+  <link href="/node_modules/videojs-vjsdownload/dist/videojs-vjsdownload.css" rel="stylesheet">
+  
+  
+  <style>
+  .vjs-paused .vjs-big-play-button { display: none; }
+  </style>
+  
+</head>
+<body>
+  <video id="videojs-overlay-player" width="640" height="264" class="video-js vjs-default-skin" data-setup='{ "controls": true, "autoplay": false, "preload": "auto" }'>
+  </video>
+  
+  <button class="previous">Previous</button>
+  <button class="next">Next</button>
+  <div class="autoadvance-group">
+    <h4>Auto-advance (in seconds)</h4>
+    <label><input type="radio" name="autoadvance" value="null"> No auto-advance</label>
+    <label><input type="radio" name="autoadvance" value="0" checked> 0</label>
+    <label><input type="radio" name="autoadvance" value="5"> 5</label>
+    <label><input type="radio" name="autoadvance" value="10"> 10</label>
+    <label><input type="radio" name="autoadvance" value="30"> 30</label>
+    <input type="button" id="en" value="test" />
+  </div>
+  
+  <script>
+
+    var lang='de';
+    
+    var videoList = [{
+  sources: [{
+    src: 'http://videojs.local/data/A_ROOD.mp4',
+    type: 'video/mp4'
+  }],
+}, {
+  sources: [{
+    src: 'http://videojs.local/data/B_BLUE.mp4',
+    type: 'video/mp4'
+  }],
+}, {
+  sources: [{
+    src: 'http://videojs.local/data/C_GREEN.mp4',
+    type: 'video/mp4'
+  }],
+}];
+
+
+  </script>  
+
+  <script src="/node_modules/video.js/dist/video.js"></script>
+  <script src="/node_modules/videojs-overlay/dist/videojs-overlay.js"></script>
+  <script src="/node_modules/videojs-playlist/dist/videojs-playlist.js"></script>
+  <script src="/node_modules/videojs-vjsdownload/dist/videojs-vjsdownload.js"></script>
+  <script src="/node_modules/videojs-select-subtitle/dist/videojs-select-subtitle.js"></script>
+  
+  <script>
+    (function(window, videojs) {
+      var player = window.player = videojs('videojs-overlay-player',{ 'playbackRates': [0.7, 1.0, 1.5, 2.0] });
+      
+
+    }(window, window.videojs));
+  
+  
+  /*
+  {
+          //content: 'The video is playing!',
+          //start: 'play',
+          //end: 'pause'
+        },
+ */
+ 
+  </script>
+  
+<script>
+
+//player.selectSubtitle();
+
+player.vjsdownload({
+	  //beforeElement: 'playbackRateMenuButton',
+      textControl: 'Download video',
+      name: 'downloadButton'
+      },
+
+
+function() {
+  console.log('Callback video-js initiated');
+  this.on('downloadvideo', function(){
+    console.log('downloadvideo triggered');
+  });
+  
+});  
+ 
+</script>
+  
+  
+<script>
+
+$('#en').click(function (){
+    lang='other playlist';
+    console.log(lang);
+    
+var videoList = [{
+  sources: [{
+    src: 'http://videojs.local/data/C_ROOD.mp4',
+    type: 'video/mp4'
+  }],
+}, {
+  sources: [{
+    src: 'http://videojs.local/data/A_BLUE.mp4',
+    type: 'video/mp4'
+  }],
+}, {
+  sources: [{
+    src: 'http://videojs.local/data/B_GREEN.mp4',
+    type: 'video/mp4'
+  }],
+}];
+
+player.playlist(videoList);
+
+});
+
+
+$('.vjs-loading-spinner').remove();
+
+
+/*
+    var inactivityTimeout = null;
+    $('#videojs-overlay-player').mousemove(function(event) {
+        player.controlBar.fadeIn();
+        if (inactivityTimeout != null) {
+            controlBarVisible = true;
+            clearTimeout(inactivityTimeout);
+        } 
+        inactivityTimeout = setTimeout(function(){
+            player.controlBar.fadeOut();
+            controlBarVisible = false;
+        }, 1000);
+    });
+ */       
+</script> 
+  
+  <script>
+
+   player.playlist(videoList);
+   player.playlist.autoadvance(0);
+   
+   document.querySelector('.previous').addEventListener('click', function() {
+      player.playlist.previous();
+    });
+
+    document.querySelector('.next').addEventListener('click', function() {
+      player.playlist.next();
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll('[name=autoadvance]'), function(el) {
+      el.addEventListener('click', function() {
+        var value = document.querySelector('[name=autoadvance]:checked').value;
+        player.playlist.autoadvance(JSON.parse(value));
+      });
+    });
+
+ </script>
+
+http://dfcb.github.io/BigVideo.js
+
+http://codepen.io/anon/pen/eNbLOa
+
+</body>
+</html>
